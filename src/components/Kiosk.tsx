@@ -80,7 +80,9 @@ export function Kiosk({
         <Rail
           rows={rows}
           layout={layout}
-          onOpen={(row) => setOpen(row)}
+          onOpen={(row) => {
+            window.setTimeout(() => setOpen(row), 0)
+          }}
         />
       </main>
 
@@ -130,15 +132,18 @@ export function Kiosk({
         </div>
       </footer>
 
-      {open && (
-        <Dialog
+      <Dialog
+        open={open !== null}
+        onOpenChange={(next) => {
+          if (!next) setOpen(null)
+        }}
+        title={
           open
-          onOpenChange={(next) => {
-            if (!next) setOpen(null)
-          }}
-          trigger={undefined}
-          title={`#${open.ticket.number} ${open.ticket.title}`}
-        >
+            ? `#${open.ticket.number} ${open.ticket.title}`
+            : 'Ticket'
+        }
+      >
+        {open ? (
           <div className="flex flex-col gap-4 text-sm text-paper/80">
             <p>
               {open.state === 'waiting_on_you'
@@ -177,8 +182,8 @@ export function Kiosk({
               )}
             </div>
           </div>
-        </Dialog>
-      )}
+        ) : null}
+      </Dialog>
     </div>
   )
 }
