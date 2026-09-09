@@ -4,9 +4,9 @@ Your agents are cooking. Don't let tickets go cold.
 
 A kitchen display for GitHub issues and PRs. Who is on it. Is it moving. Is it going stale.
 
-[![the pass](./public/badge.svg)](https://the-pass.vercel.app)
+[![the pass](./public/badge.svg)](https://the-pass-theta.vercel.app)
 
-Intended GitHub home: `robweidner/kitchen-board`. This session could not create that repo (the GitHub token is `rweidnerfuseon`). Code lives in this tree until Rob creates or transfers it.
+Intended GitHub home: `robweidner/kitchen-board`. This session could not create that repo (the GitHub token is `rweidnerfuseon`). Code lives in this tree until Rob creates or transfers it. Public demo: https://the-pass-theta.vercel.app
 
 ## Demo
 
@@ -17,7 +17,7 @@ npm install
 npm run dev
 ```
 
-Then http://localhost:5173
+Then http://localhost:5173 or the hosted demo at https://the-pass-theta.vercel.app
 
 - Living system: `/design`
 - Silent 15s loop: `/loop.html`

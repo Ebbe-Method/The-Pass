@@ -24,4 +24,4 @@ Office-hours next assignment: leave the public demo on a second monitor for **fi
 | 4 | | | | |
 | 5 | | | | |
 
-This session cannot complete five workdays. The protocol is the deliverable. Start the clock when the hosted demo URL is open on the second monitor.
+This session cannot complete five workdays. The protocol is the deliverable. Start the clock when https://the-pass-theta.vercel.app is open on the second monitor.
