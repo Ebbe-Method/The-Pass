@@ -36,7 +36,7 @@ export function ActorChip({
         )}
         aria-hidden="true"
       >
-        {actor.short.slice(0, 2)}
+        {actor.short}
       </span>
       {!compact && (
         <span className="font-display text-[11px] tracking-wide opacity-80">

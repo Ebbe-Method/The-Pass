@@ -1,6 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { cn } from '@/lib/utils'
 
 export function Dialog({
   open,
@@ -28,29 +27,31 @@ export function Dialog({
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/70" />
         <DialogPrimitive.Content
-          className={cn(
-            'fixed top-1/2 left-1/2 z-[60] w-[min(520px,calc(100%-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-steel bg-field-2 p-6 text-paper shadow-2xl relative',
-          )}
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
           onPointerDownOutside={(event) => {
             if (Date.now() - openedAt.current < 400) event.preventDefault()
           }}
           onInteractOutside={(event) => {
             if (Date.now() - openedAt.current < 400) event.preventDefault()
           }}
+          onPointerDown={(event) => {
+            if (event.target === event.currentTarget) onOpenChange?.(false)
+          }}
         >
-          <DialogPrimitive.Title className="font-display text-xl font-semibold">
-            {title}
-          </DialogPrimitive.Title>
-          <DialogPrimitive.Description className="sr-only">
-            Ticket actions
-          </DialogPrimitive.Description>
-          <div className="mt-4">{children}</div>
-          <DialogPrimitive.Close className="absolute top-3 right-3 text-paper/50 hover:text-paper">
-            Close
-          </DialogPrimitive.Close>
+          <div className="relative w-[min(520px,calc(100%-2rem))] rounded-lg border border-steel bg-field-2 p-6 text-paper shadow-2xl">
+            <DialogPrimitive.Title className="font-display text-xl font-semibold">
+              {title}
+            </DialogPrimitive.Title>
+            <DialogPrimitive.Description className="sr-only">
+              Ticket actions
+            </DialogPrimitive.Description>
+            <div className="mt-4">{children}</div>
+            <DialogPrimitive.Close className="absolute top-3 right-3 text-paper/50 hover:text-paper">
+              Close
+            </DialogPrimitive.Close>
+          </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   )
 }
-
