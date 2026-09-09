@@ -1,6 +1,6 @@
 import type { Ticket } from '../kiosk/types'
-import { sizeFromLabels } from './labels'
-import { applyRuntimeOverlay } from './overlay'
+import { sizeFromLabels } from './labels.ts'
+import { applyRuntimeOverlay } from './overlay.ts'
 
 export type GithubLabelLike = { name: string } | string
 

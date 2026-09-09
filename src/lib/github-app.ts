@@ -1,13 +1,13 @@
 /// <reference types="node" />
-import { createSign } from 'node:crypto'
+import { createSign } from 'crypto'
 import {
   githubTokenFromEnv,
   normalizePrivateKey,
   readStoredApp,
   type StoredApp,
-} from './app-credentials'
-import type { GithubIssueLike } from './github-snapshot'
-import type { RepoRef } from './install-flow'
+} from './app-credentials.ts'
+import type { GithubIssueLike } from './github-snapshot.ts'
+import type { RepoRef } from './install-flow.ts'
 
 const GITHUB_API = 'https://api.github.com'
 const UA = 'the-pass-kiosk'

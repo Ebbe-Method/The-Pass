@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cookieFromRequest } from '../src/lib/app-credentials'
-import { getOrRefreshBoard } from '../src/lib/board-refresh'
-import { overlayBoardAgents } from '../src/lib/board-store'
-import type { CursorAgent } from '../src/lib/cursor-match'
+import { cookieFromRequest } from '../src/lib/app-credentials.ts'
+import { getOrRefreshBoard } from '../src/lib/board-refresh.ts'
+import { overlayBoardAgents } from '../src/lib/board-store.ts'
+import type { CursorAgent } from '../src/lib/cursor-match.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

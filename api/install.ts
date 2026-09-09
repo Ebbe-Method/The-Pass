@@ -4,10 +4,10 @@ import {
   persistAppToVercel,
   rememberApp,
   serializeAppCookie,
-} from '../src/lib/app-credentials'
-import { convertAppManifest } from '../src/lib/github-app'
-import { snapshotInstallationRepos } from '../src/lib/board-refresh'
-import { installUrlForApp, kioskPathForRepos } from '../src/lib/install-flow'
+} from '../src/lib/app-credentials.ts'
+import { convertAppManifest } from '../src/lib/github-app.ts'
+import { snapshotInstallationRepos } from '../src/lib/board-refresh.ts'
+import { installUrlForApp, kioskPathForRepos } from '../src/lib/install-flow.ts'
 
 function env(): Record<string, string | undefined> {
   return process.env

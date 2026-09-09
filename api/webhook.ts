@@ -1,12 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cookieFromRequest } from '../src/lib/app-credentials'
-import { snapshotBoardFromGithub } from '../src/lib/board-refresh'
-import { applyGithubEvent, applyInstallation, getBoard } from '../src/lib/board-store'
-import { resolveInstallationToken, resolveRepoToken } from '../src/lib/github-app'
+import { cookieFromRequest } from '../src/lib/app-credentials.ts'
+import { snapshotBoardFromGithub } from '../src/lib/board-refresh.ts'
+import { applyGithubEvent, applyInstallation, getBoard } from '../src/lib/board-store.ts'
+import { resolveInstallationToken, resolveRepoToken } from '../src/lib/github-app.ts'
 import {
   installationIdFromPayload,
   reposFromInstallationPayload,
-} from '../src/lib/install-flow'
+} from '../src/lib/install-flow.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

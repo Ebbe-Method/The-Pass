@@ -1,5 +1,5 @@
 import type { TicketState } from '../kiosk/types'
-import { STATE_LABEL } from './freshness'
+import { STATE_LABEL } from './freshness.ts'
 
 export type OgTicket = {
   number: number

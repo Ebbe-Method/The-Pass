@@ -1,13 +1,13 @@
 import type { BoardSnapshot } from '../kiosk/types'
-import { putBoard, getBoard } from './board-store'
+import { putBoard, getBoard } from './board-store.ts'
 import {
   listInstallationRepos,
   listOpenIssues,
   resolveInstallationToken,
   resolveRepoToken,
-} from './github-app'
-import { snapshotTicketsFromGithubIssues } from './github-snapshot'
-import type { RepoRef } from './install-flow'
+} from './github-app.ts'
+import { snapshotTicketsFromGithubIssues } from './github-snapshot.ts'
+import type { RepoRef } from './install-flow.ts'
 
 export type RefreshCtx = {
   env?: Record<string, string | undefined>

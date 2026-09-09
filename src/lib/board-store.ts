@@ -1,9 +1,9 @@
 import type { BoardSnapshot, Ticket } from '../kiosk/types'
-import type { CursorAgent } from './cursor-match'
-import { classifyGithubEvent } from './github-events'
-import type { IncomingGithubEvent } from './github-events'
-import { sizeFromLabels } from './labels'
-import { applyRuntimeOverlay } from './overlay'
+import type { CursorAgent } from './cursor-match.ts'
+import { classifyGithubEvent } from './github-events.ts'
+import type { IncomingGithubEvent } from './github-events.ts'
+import { sizeFromLabels } from './labels.ts'
+import { applyRuntimeOverlay } from './overlay.ts'
 
 const boards = new Map<string, BoardSnapshot>()
 

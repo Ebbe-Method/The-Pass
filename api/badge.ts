@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cookieFromRequest } from '../src/lib/app-credentials'
-import { getOrRefreshBoard } from '../src/lib/board-refresh'
-import { heatFor } from '../src/lib/freshness'
+import { cookieFromRequest } from '../src/lib/app-credentials.ts'
+import { getOrRefreshBoard } from '../src/lib/board-refresh.ts'
+import { heatFor } from '../src/lib/freshness.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = new URL(req.url ?? '/', 'http://local')

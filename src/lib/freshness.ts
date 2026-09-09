@@ -1,6 +1,6 @@
 import type { Heat, Ticket, TicketState } from '../kiosk/types'
-import { ABANDONED_MS, STALE_MS, WAITING_HOT_MS } from '../kiosk/types'
-import { lastProgressAt } from './progress'
+import { ABANDONED_MS, STALE_MS, WAITING_HOT_MS } from '../kiosk/types.ts'
+import { lastProgressAt } from './progress.ts'
 
 export function freshnessMs(ticket: Ticket, now: number): number {
   return Math.max(0, now - Date.parse(lastProgressAt(ticket)))

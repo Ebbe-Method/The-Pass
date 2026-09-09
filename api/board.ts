@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cookieFromRequest } from '../src/lib/app-credentials'
-import { getOrRefreshBoard } from '../src/lib/board-refresh'
+import { cookieFromRequest } from '../src/lib/app-credentials.ts'
+import { getOrRefreshBoard } from '../src/lib/board-refresh.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const owner = String(req.query.owner ?? '')

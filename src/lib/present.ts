@@ -1,5 +1,5 @@
 import type { ActorRuntime, Heat, Ticket, TicketState } from '../kiosk/types'
-import { freshnessMs, heatFor, stateFor } from './freshness'
+import { freshnessMs, heatFor, stateFor } from './freshness.ts'
 
 export type PresentedTicket = {
   ticket: Ticket

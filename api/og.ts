@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cookieFromRequest } from '../src/lib/app-credentials'
-import { getOrRefreshBoard } from '../src/lib/board-refresh'
-import { stateFor } from '../src/lib/freshness'
-import { boardOgSvg } from '../src/lib/og-svg'
+import { cookieFromRequest } from '../src/lib/app-credentials.ts'
+import { getOrRefreshBoard } from '../src/lib/board-refresh.ts'
+import { stateFor } from '../src/lib/freshness.ts'
+import { boardOgSvg } from '../src/lib/og-svg.ts'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = new URL(req.url ?? '/', 'http://local')

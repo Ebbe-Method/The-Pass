@@ -1,7 +1,7 @@
 import type { ActorRuntime, Ticket } from '../kiosk/types'
-import type { CursorAgent } from './cursor-match'
-import { matchCursorAgent, sessionUrlFor } from './cursor-match'
-import { parseKitchenClaim } from './heartbeat'
+import type { CursorAgent } from './cursor-match.ts'
+import { matchCursorAgent, sessionUrlFor } from './cursor-match.ts'
+import { parseKitchenClaim } from './heartbeat.ts'
 
 const RUNTIMES: ActorRuntime[] = [
   'cursor',
