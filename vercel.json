@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/board/:owner/:repo",
+      "destination": "/api/board?owner=:owner&repo=:repo"
+    },
+    {
+      "source": "/api/badge/:owner/:repo",
+      "destination": "/api/badge?owner=:owner&repo=:repo"
+    },
+    {
+      "source": "/api/og/:owner/:repo",
+      "destination": "/api/og?owner=:owner&repo=:repo"
+    },
+    {
+      "source": "/((?!api/|assets/|shotgun/|loop.html|og.svg|badge.svg|favicon.svg|app-manifest.json).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

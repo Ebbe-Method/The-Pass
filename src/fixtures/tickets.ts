@@ -1,0 +1,166 @@
+import type { Ticket } from '../kiosk/types'
+
+function ago(ms: number): string {
+  return new Date(Date.now() - ms).toISOString()
+}
+
+const DEMO_OWNER = 'fuseon-connections'
+const DEMO_REPO = 'fuse-on-v2'
+
+export const demoTickets: Ticket[] = [
+  {
+    id: 'needs-rob',
+    number: 3064,
+    kind: 'pr',
+    title: 'Merge-queue attestation for user-visible work',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/pull/3064',
+    openedAt: ago(3 * 60 * 60 * 1000),
+    size: 'L',
+    labels: ['status:needs-rob'],
+    events: [
+      {
+        kind: 'ci',
+        at: ago(25 * 60 * 1000),
+        actor: 'bot',
+        label: 'CI green',
+      },
+    ],
+    ci: 'green',
+    hasLinkedPr: true,
+    commentCount: 4,
+    runtime: 'human',
+  },
+  {
+    id: 'abandoned',
+    number: 1321,
+    kind: 'issue',
+    title: 'Evening open-loops mutex never posted the claim',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/issues/1321',
+    openedAt: ago(6 * 60 * 60 * 1000),
+    size: 'M',
+    labels: ['status:in-flight'],
+    events: [],
+    ci: 'none',
+    hasLinkedPr: false,
+    commentCount: 0,
+    runtime: 'unknown',
+  },
+  {
+    id: 'cursor-live',
+    number: 3840,
+    kind: 'issue',
+    title: 'Kitchen claim heartbeat on SessionStart',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/issues/3840',
+    openedAt: ago(80 * 60 * 1000),
+    size: 'S',
+    labels: ['status:in-flight'],
+    events: [
+      {
+        kind: 'commit',
+        at: ago(11 * 60 * 1000),
+        actor: 'cursor',
+        label: 'commit',
+      },
+    ],
+    sessionUrl: 'https://cursor.com/agents/bc-76e61dea-89a3-4cef-9950-a65f31d38ce8',
+    runtime: 'cursor',
+    ci: 'pending',
+    hasLinkedPr: true,
+    commentCount: 2,
+  },
+  {
+    id: 'claude-cook',
+    number: 2711,
+    kind: 'pr',
+    title: 'Size-aware stale thresholds for tracker hygiene',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/pull/2711',
+    openedAt: ago(5 * 60 * 60 * 1000),
+    size: 'L',
+    labels: ['status:in-flight'],
+    events: [
+      {
+        kind: 'comment',
+        at: ago(70 * 60 * 1000),
+        actor: 'claude',
+        label: 'comment',
+      },
+    ],
+    runtime: 'claude',
+    ci: 'pending',
+    hasLinkedPr: true,
+    commentCount: 6,
+  },
+  {
+    id: 'queued',
+    number: 4012,
+    kind: 'issue',
+    title: 'Document the heartbeat snippet for consumer repos',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/issues/4012',
+    openedAt: ago(40 * 60 * 1000),
+    size: 'S',
+    labels: ['ready-for-agent'],
+    events: [],
+    runtime: 'unknown',
+    ci: 'none',
+    hasLinkedPr: false,
+    commentCount: 0,
+  },
+  {
+    id: 'copilot-review',
+    number: 3550,
+    kind: 'pr',
+    title: 'Actor chips when GitHub authors collapse to one login',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/pull/3550',
+    openedAt: ago(9 * 60 * 60 * 1000),
+    size: 'M',
+    labels: ['status:in-flight'],
+    events: [
+      {
+        kind: 'review',
+        at: ago(18 * 60 * 1000),
+        actor: 'human',
+        label: 'review submitted',
+      },
+      {
+        kind: 'commit',
+        at: ago(2 * 60 * 60 * 1000),
+        actor: 'copilot',
+        label: 'commit',
+      },
+    ],
+    runtime: 'copilot',
+    ci: 'green',
+    hasLinkedPr: true,
+    commentCount: 3,
+  },
+  {
+    id: 'magic-tear',
+    number: 4099,
+    kind: 'issue',
+    title: 'Unstick the waiting-on-you rail before dinner',
+    url: 'https://github.com/fuseon-connections/fuse-on-v2/issues/4099',
+    openedAt: ago(22 * 60 * 1000),
+    size: 'S',
+    labels: ['status:needs-rob'],
+    events: [
+      {
+        kind: 'label',
+        at: ago(22 * 60 * 1000),
+        actor: 'bot',
+        label: 'status:needs-rob',
+      },
+    ],
+    runtime: 'human',
+    ci: 'none',
+    hasLinkedPr: false,
+    commentCount: 1,
+    arriveAfterMs: 8000,
+  },
+]
+
+export const demoSnapshot = {
+  owner: DEMO_OWNER,
+  repo: DEMO_REPO,
+  tickets: demoTickets,
+  generatedAt: new Date().toISOString(),
+}
