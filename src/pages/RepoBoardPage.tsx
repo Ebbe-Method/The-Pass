@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Kiosk } from '@/components/Kiosk'
-import { demoTickets } from '@/fixtures/tickets'
 import type { Ticket } from '@/kiosk/types'
 
 export function RepoBoardPage() {
   const { owner = 'demo', repo = 'kitchen' } = useParams()
-  const [tickets, setTickets] = useState<Ticket[]>(demoTickets)
-  const [demo, setDemo] = useState(true)
+  const [tickets, setTickets] = useState<Ticket[]>([])
+  const [demo, setDemo] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -19,15 +18,13 @@ export function RepoBoardPage() {
         })
         .then((body) => {
           if (cancelled) return
-          if (body.tickets?.length) {
-            setTickets(body.tickets)
-            setDemo(false)
-          }
+          setTickets(body.tickets ?? [])
+          setDemo(false)
         })
         .catch(() => {
           if (!cancelled) {
-            setTickets(demoTickets)
-            setDemo(true)
+            setTickets([])
+            setDemo(false)
           }
         })
     }

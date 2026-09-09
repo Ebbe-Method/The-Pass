@@ -1,6 +1,6 @@
 # GitHub App (Layer A) — human steps
 
-Code for webhooks, the board API, and the manifest is in this repo. Marketplace listing is a GitHub UI step on **robweidner**, not something an agent session can finish while authenticated as another account.
+Code for webhooks, the board API, and the manifest is in this repo. Marketplace listing is a GitHub UI step on **robweidner**. Repo home: https://github.com/Ebbe-Method/kitchen-board.
 
 1. Open https://github.com/settings/apps/new while logged in as `robweidner`.
 2. Paste [`public/app-manifest.json`](../public/app-manifest.json). Hook URL is `https://<host>/api/webhook`.

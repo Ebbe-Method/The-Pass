@@ -6,7 +6,7 @@ A kitchen display for GitHub issues and PRs. Who is on it. Is it moving. Is it g
 
 [![the pass](./public/badge.svg)](https://the-pass-theta.vercel.app)
 
-Intended GitHub home: `robweidner/kitchen-board`. This session could not create that repo (the GitHub token is `rweidnerfuseon`). Code lives in this tree until Rob creates or transfers it. Public demo: https://the-pass-theta.vercel.app
+GitHub home: [`Ebbe-Method/kitchen-board`](https://github.com/Ebbe-Method/kitchen-board). Public demo: https://the-pass-theta.vercel.app
 
 ## Demo
 

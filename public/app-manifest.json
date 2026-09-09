@@ -1,6 +1,7 @@
 {
   "name": "The Pass",
-  "url": "https://github.com/robweidner/kitchen-board",
+  "url": "https://github.com/Ebbe-Method/kitchen-board",
+  "setup_url": "https://the-pass-theta.vercel.app/install",
   "hook_attributes": {
     "url": "https://the-pass-theta.vercel.app/api/webhook",
     "active": true

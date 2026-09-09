@@ -1,5 +1,7 @@
-import { Link } from 'react-router'
+import { githubAppManifest, PUBLIC_HOST, REPO_HOME } from '@/lib/app-manifest'
 import { buttonVariants } from '@/components/ui/button'
+
+const MANIFEST = JSON.stringify(githubAppManifest())
 
 export function InstallPage() {
   return (
@@ -11,48 +13,33 @@ export function InstallPage() {
         One click. Then the kiosk.
       </h1>
       <p className="mt-4 text-paper/70">
-        GitHub Marketplace install lands on{' '}
-        <code className="font-clock text-lamp">/org/repo</code> already
-        in kiosk. No PAT, no .env, no npm.
+        GitHub creates the App from the manifest. Install it on a repo. Land on{' '}
+        <code className="font-clock text-lamp">/{'{owner}'}/{'{repo}'}</code>{' '}
+        already in kiosk. No PAT, no .env, no npm.
       </p>
-      <ol className="mt-8 list-decimal space-y-3 pl-5 text-paper/75">
-        <li>
-          Create the GitHub App from{' '}
-          <a className="text-lamp underline" href="/app-manifest.json">
-            the manifest
-          </a>
-          . GitHub&apos;s form is{' '}
-          <a
-            className="text-lamp underline"
-            href="https://github.com/settings/apps/new"
-          >
-            github.com/settings/apps/new
-          </a>
-          .
-        </li>
-        <li>Install that App on the repo you actually watch.</li>
-        <li>
-          Open <code className="font-clock text-lamp">/owner/repo</code>.
-          Tickets land as webhooks arrive.
-        </li>
-      </ol>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          className={buttonVariants()}
-          href="/app-manifest.json"
-          target="_blank"
-          rel="noreferrer"
-        >
-          App manifest
+      <form
+        className="mt-8"
+        action="https://github.com/settings/apps/new"
+        method="post"
+      >
+        <input type="hidden" name="manifest" value={MANIFEST} />
+        <button className={buttonVariants()} type="submit">
+          Create the GitHub App
+        </button>
+      </form>
+      <p className="mt-6 text-sm text-paper/55">
+        After install, open{' '}
+        <code className="font-clock text-lamp">
+          {PUBLIC_HOST}/owner/repo
+        </code>
+        . Source:{' '}
+        <a className="text-lamp underline" href={REPO_HOME}>
+          Ebbe-Method/kitchen-board
         </a>
-        <Link className={buttonVariants({ variant: 'ghost' })} to="/">
-          Back to the demo
-        </Link>
-      </div>
+        .
+      </p>
       <p className="mt-8 text-sm text-paper/45">
         Until Marketplace lists the App, the public demo is the product.
-        Webhook: <code>POST /api/webhook</code>. Live board:{' '}
-        <code>GET /api/board/:owner/:repo</code>.
       </p>
     </div>
   )

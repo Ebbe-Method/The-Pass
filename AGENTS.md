@@ -16,9 +16,14 @@ Repo-pinned skills win. This is not Fuse On. Do not copy Basecamp, merge-queue, 
 | Before claiming done | `verification-before-completion` |
 | Finish the branch | `finishing-a-development-branch` |
 | Bugs | `systematic-debugging` |
+| Independent parallel work only | `dispatching-parallel-agents` |
+| New skill in this repo only | `writing-skills` |
 | Design vocabulary | Impeccable (`npx impeccable install`). Commands: typeset, layout, colorize, animate, quieter, bolder, distill, clarify, adapt, onboard, harden, optimize, polish, audit |
 | Visual alternatives | gstack `/design-shotgun` → `/design-html` → `/plan-design-review` |
-| Product judgment | gstack office-hours, plus user-feedback-system, jtbd-building, positioning-craft, growth-embedded, ship-decisions |
+| After watched use | gstack `/plan-ceo-review` |
+| After the wedge is chosen | gstack `/plan-eng-review` |
+| Hosted URL | gstack `/qa` `/review` `/ship` |
+| Product judgment | `user-feedback-system`, `continuous-discovery`, `jtbd-building`, `zero-to-launch`, `positioning-craft`, `metrics-frameworks`, `growth-embedded`, `ai-startup-building`, `strategic-build`, `ship-decisions` |
 
 Do not pin Beautiful UI as a competing taste skill. Steal Task Rows / Tool Chips / Approval Card craft only.
 
