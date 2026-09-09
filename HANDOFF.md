@@ -65,9 +65,9 @@ Local tree on the sender VM: `/home/ubuntu/kitchen-board`. Tests: **55 passing**
 
 ## Unfinished (your job)
 
-1. Confirm this branch is on GitHub and open/keep a PR into `main`. Draft PR: https://github.com/Ebbe-Method/kitchen-board/pull/1
-2. Link Vercel to this GitHub repo (Diezuno `the-pass` is file-deploy only, `link: null`. Do not deploy production from `main` while `main` is the README stub. Prefer an Ebbe git-linked project with `deploy: false`, then previews from this branch.)
-3. GitHub App: Rob creates from `/install` while logged in as `robweidner`. Marketplace listing is a human GitHub UI step. Conversion + `installation_id` redirect + GitHub snapshot are implemented; room-display env still needs `GITHUB_APP_*` (or `VERCEL_TOKEN` so conversion can write them).
+1. Confirm this branch is on GitHub and keep draft PR https://github.com/Ebbe-Method/kitchen-board/pull/1. Do not merge while `main` is the README stub — Ebbe `kitchen-board` production git branch is `main`.
+2. Diezuno `the-pass` stays file-deployed (MCP cannot git-link an existing unlinked project). Ebbe `kitchen-board` (`prj_FAM7ADEI2DiqgL18K57zFZmX8dy3`) is git-linked to this repo; feature-branch pushes create previews. Public alias remains https://the-pass-theta.vercel.app.
+3. GitHub App: Rob creates from `/install` while logged in as `robweidner`. Marketplace listing is a human GitHub UI step. Conversion + `installation_id` redirect + GitHub snapshot are in code; room-display env still needs `GITHUB_APP_*` (or `VERCEL_TOKEN` so conversion can write them).
 4. Watch protocol: `docs/watch-protocol.md` — five unprompted workdays. Do not fake the log. Name a second human after day one.
 5. Sean Ellis: `docs/pmf-survey.md` — only after real use twice in two weeks. Do not invent a score.
 6. Personalized OG/badge already have code (`api/og.ts`, `api/badge.ts`). Fixture OG shipped; live OG needs a real board snapshot (now refreshes from GitHub when credentials exist).
