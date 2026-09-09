@@ -4,6 +4,8 @@ Marketplace listing is a GitHub UI step on **robweidner**. Repo home: https://gi
 
 Code on `/install` already posts the manifest, converts the one-shot `code`, and redirects to GitHub install. After install, GitHub returns `installation_id` to `/install`, which snapshots open issues and sends you to `/{owner}/{repo}`.
 
+Read permissions: issues, pull requests, checks, contents (`push`), actions (`workflow_run`), metadata. GitHub rejects the manifest if `push` or `workflow_run` are subscribed without those two.
+
 1. Open https://the-pass-theta.vercel.app/install while logged in as `robweidner`.
 2. Create the App (Ebbe-Method org, or personal).
 3. Install on a repo. Land on `https://<host>/<owner>/<repo>` already in kiosk.

@@ -14,6 +14,8 @@ export type GithubAppManifest = {
     issues: 'read'
     pull_requests: 'read'
     checks: 'read'
+    contents: 'read'
+    actions: 'read'
     metadata: 'read'
   }
   default_events: string[]
@@ -36,6 +38,8 @@ export function githubAppManifest(host = PUBLIC_HOST): GithubAppManifest {
       issues: 'read',
       pull_requests: 'read',
       checks: 'read',
+      contents: 'read',
+      actions: 'read',
       metadata: 'read',
     },
     default_events: [

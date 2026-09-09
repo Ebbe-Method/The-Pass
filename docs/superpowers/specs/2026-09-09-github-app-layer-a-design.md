@@ -9,7 +9,7 @@ The demo is fixture data. Time-to-own-data must be Marketplace Install → `http
 
 ## Approach chosen
 
-GitHub App (not OAuth user token, not PAT). Permissions: issues, pull requests, checks, metadata. Webhooks: issues, issue_comment, pull_request, pull_request_review, push, check_run, workflow_run.
+GitHub App (not OAuth user token, not PAT). Permissions: issues, pull requests, checks, contents, actions, metadata (all read). Webhooks: issues, issue_comment, pull_request, pull_request_review, push, check_run, workflow_run. `push` needs contents; `workflow_run` needs actions.
 
 Snapshot on install; webhooks after. In-memory store in this slice (swap for durable later). Kiosk polls `/api/board/:owner/:repo` every 8s.
 
