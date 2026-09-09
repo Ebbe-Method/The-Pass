@@ -1,0 +1,27 @@
+{
+  "name": "The Pass",
+  "url": "https://github.com/Ebbe-Method/kitchen-board",
+  "setup_url": "https://the-pass-theta.vercel.app/install",
+  "hook_attributes": {
+    "url": "https://the-pass-theta.vercel.app/api/webhook",
+    "active": true
+  },
+  "redirect_url": "https://the-pass-theta.vercel.app/install",
+  "callback_urls": ["https://the-pass-theta.vercel.app/install"],
+  "public": true,
+  "default_permissions": {
+    "issues": "read",
+    "pull_requests": "read",
+    "checks": "read",
+    "metadata": "read"
+  },
+  "default_events": [
+    "issues",
+    "issue_comment",
+    "pull_request",
+    "pull_request_review",
+    "push",
+    "check_run",
+    "workflow_run"
+  ]
+}
