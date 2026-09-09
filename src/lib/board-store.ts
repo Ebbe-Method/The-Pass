@@ -119,7 +119,19 @@ export function applyGithubEvent(
   return snapshot
 }
 
-export function applyInstallation(owner: string, repo: string): BoardSnapshot {
+export function applyInstallation(
+  owner: string,
+  repo: string,
+  tickets: Ticket[] = [],
+): BoardSnapshot {
+  if (tickets.length > 0) {
+    return putBoard({
+      owner,
+      repo,
+      tickets,
+      generatedAt: new Date().toISOString(),
+    })
+  }
   const existing = getBoard(owner, repo)
   if (existing) return existing
   return putBoard({

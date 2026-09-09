@@ -1,35 +1,39 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyGithubEvent, applyInstallation } from '../src/lib/board-store'
+import { cookieFromRequest } from '../src/lib/app-credentials'
+import { snapshotBoardFromGithub } from '../src/lib/board-refresh'
+import { applyGithubEvent, applyInstallation, getBoard } from '../src/lib/board-store'
+import { resolveInstallationToken, resolveRepoToken } from '../src/lib/github-app'
+import {
+  installationIdFromPayload,
+  reposFromInstallationPayload,
+} from '../src/lib/install-flow'
 
-type RepoRef = { name?: string; full_name?: string; owner?: { login?: string } }
-
-function reposFromBody(body: Record<string, unknown>): Array<{ owner: string; name: string }> {
-  const repos = (body.repositories ??
-    body.repositories_added ??
-    []) as RepoRef[]
-  return repos
-    .map((repo) => {
-      if (repo.full_name?.includes('/')) {
-        const [owner, name] = repo.full_name.split('/')
-        return { owner, name }
-      }
-      const owner = repo.owner?.login
-      if (owner && repo.name) return { owner, name: repo.name }
-      return null
-    })
-    .filter((row): row is { owner: string; name: string } => row !== null)
-}
-
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'POST only' })
     return
   }
   const body = (req.body ?? {}) as Record<string, unknown>
   const eventName = String(req.headers['x-github-event'] ?? 'issues')
+  const cookie = cookieFromRequest(req.headers.cookie)
+  const env = process.env as Record<string, string | undefined>
 
   if (eventName === 'installation' || eventName === 'installation_repositories') {
-    const seeded = reposFromBody(body).map((repo) => applyInstallation(repo.owner, repo.name))
+    const repos = reposFromInstallationPayload(body)
+    const installationId = installationIdFromPayload(body)
+    const token = installationId
+      ? await resolveInstallationToken(installationId, env, cookie)
+      : null
+    if (token) {
+      const boards = await Promise.all(
+        repos.map((repo) =>
+          snapshotBoardFromGithub(repo.owner, repo.name, token),
+        ),
+      )
+      res.status(200).json({ ok: true, boards: boards.length })
+      return
+    }
+    const seeded = repos.map((repo) => applyInstallation(repo.owner, repo.name))
     res.status(200).json({ ok: true, boards: seeded.length })
     return
   }
@@ -44,6 +48,16 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: 'missing repository' })
     return
   }
+
+  if (!getBoard(owner, name)?.tickets.length) {
+    const token = await resolveRepoToken(owner, name, env, cookie).catch(
+      () => null,
+    )
+    if (token) {
+      await snapshotBoardFromGithub(owner, name, token).catch(() => undefined)
+    }
+  }
+
   const snapshot = applyGithubEvent(owner, name, {
     name: eventName,
     payload: body,

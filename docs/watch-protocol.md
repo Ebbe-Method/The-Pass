@@ -25,3 +25,6 @@ Office-hours next assignment: leave the public demo on a second monitor for **fi
 | 5 | | | | |
 
 This session cannot complete five workdays. The protocol is the deliverable. Start the clock when https://the-pass-theta.vercel.app is open on the second monitor. Repo: https://github.com/Ebbe-Method/kitchen-board.
+
+Receiving agent 2026-09-09: public demo is still live. Do not fill the log until a human actually watches a workday. Second human stays unnamed.
+

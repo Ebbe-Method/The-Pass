@@ -9,6 +9,7 @@ describe('githubAppManifest', () => {
     expect(manifest.hook_attributes.url).toBe(`${PUBLIC_HOST}/api/webhook`)
     expect(manifest.redirect_url).toBe(`${PUBLIC_HOST}/install`)
     expect(manifest.setup_url).toBe(`${PUBLIC_HOST}/install`)
+    expect(manifest.setup_on_update).toBe(true)
     expect(manifest.default_permissions.issues).toBe('read')
     expect(manifest.default_events).toContain('check_run')
   })

@@ -8,6 +8,7 @@ export type GithubAppManifest = {
   redirect_url: string
   callback_urls: string[]
   setup_url: string
+  setup_on_update: boolean
   public: boolean
   default_permissions: {
     issues: 'read'
@@ -29,6 +30,7 @@ export function githubAppManifest(host = PUBLIC_HOST): GithubAppManifest {
     redirect_url: `${host}/install`,
     callback_urls: [`${host}/install`],
     setup_url: `${host}/install`,
+    setup_on_update: true,
     public: true,
     default_permissions: {
       issues: 'read',

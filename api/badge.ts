@@ -1,12 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getBoard } from '../src/lib/board-store'
+import { cookieFromRequest } from '../src/lib/app-credentials'
+import { getOrRefreshBoard } from '../src/lib/board-refresh'
 import { heatFor } from '../src/lib/freshness'
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = new URL(req.url ?? '/', 'http://local')
   const owner = url.searchParams.get('owner') ?? 'demo'
   const repo = url.searchParams.get('repo') ?? 'kitchen'
-  const board = getBoard(owner, repo)
+  const board = await getOrRefreshBoard(owner, repo, {
+    env: process.env as Record<string, string | undefined>,
+    cookie: cookieFromRequest(req.headers.cookie),
+  })
   const now = Date.now()
   const hot = board?.tickets.filter((t) => heatFor(t, now) === 'hot').length ?? 0
   const label = hot > 0 ? `${hot} hot` : 'cool'

@@ -2,6 +2,7 @@
   "name": "The Pass",
   "url": "https://github.com/Ebbe-Method/kitchen-board",
   "setup_url": "https://the-pass-theta.vercel.app/install",
+  "setup_on_update": true,
   "hook_attributes": {
     "url": "https://the-pass-theta.vercel.app/api/webhook",
     "active": true

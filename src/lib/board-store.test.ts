@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyGithubEvent, getBoard } from './board-store'
+import { applyGithubEvent, applyInstallation, getBoard } from './board-store'
 
 describe('applyGithubEvent', () => {
   it('opens a ticket from an issues webhook and records a label', () => {
@@ -62,5 +62,29 @@ describe('applyGithubEvent', () => {
     expect(snapshot.tickets).toHaveLength(1)
     expect(snapshot.tickets[0].runtime).toBe('claude')
     expect(snapshot.tickets[0].size).toBe('S')
+  })
+})
+
+describe('applyInstallation', () => {
+  it('stores a GitHub snapshot when tickets are provided', () => {
+    const snapshot = applyInstallation('acme', 'seeded', [
+      {
+        id: '1',
+        number: 1,
+        kind: 'issue',
+        title: 'On the pass',
+        url: 'https://github.com/acme/seeded/issues/1',
+        openedAt: '2026-09-09T12:00:00.000Z',
+        size: 'S',
+        labels: [],
+        events: [],
+        ci: 'none',
+        hasLinkedPr: false,
+        commentCount: 0,
+        runtime: 'unknown',
+      },
+    ])
+    expect(getBoard('acme', 'seeded')?.tickets[0].title).toBe('On the pass')
+    expect(snapshot.tickets).toHaveLength(1)
   })
 })

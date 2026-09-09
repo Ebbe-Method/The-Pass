@@ -10,7 +10,8 @@ import { presentTicket } from '@/lib/present'
 
 export function DesignPage() {
   const [now] = useState(() => Date.now())
-  const sample = presentTicket(demoTickets[0], now)
+  const waiting = presentTicket(demoTickets[0], now)
+  const stale = presentTicket(demoTickets[1], now)
   const cooking = presentTicket(
     demoTickets.find((t) => t.id === 'cursor-live') ?? demoTickets[2],
     now,
@@ -53,9 +54,10 @@ export function DesignPage() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl">Ticket</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <TicketCard row={sample} onOpen={() => undefined} />
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          <TicketCard row={waiting} onOpen={() => undefined} />
           <TicketCard row={cooking} onOpen={() => undefined} />
+          <TicketCard row={stale} onOpen={() => undefined} />
         </div>
       </section>
 

@@ -1,14 +1,18 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getBoard } from '../src/lib/board-store'
+import { cookieFromRequest } from '../src/lib/app-credentials'
+import { getOrRefreshBoard } from '../src/lib/board-refresh'
 import { stateFor } from '../src/lib/freshness'
 import { boardOgSvg } from '../src/lib/og-svg'
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = new URL(req.url ?? '/', 'http://local')
   const owner = url.searchParams.get('owner') ?? 'demo'
   const repo = url.searchParams.get('repo') ?? 'kitchen'
   const blur = url.searchParams.get('blur') === '1'
-  const board = getBoard(owner, repo)
+  const board = await getOrRefreshBoard(owner, repo, {
+    env: process.env as Record<string, string | undefined>,
+    cookie: cookieFromRequest(req.headers.cookie),
+  })
   const now = Date.now()
   const tickets = (board?.tickets ?? []).map((ticket) => ({
     number: ticket.number,

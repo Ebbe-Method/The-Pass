@@ -29,7 +29,7 @@ Then http://localhost:5173 or the hosted demo at https://the-pass-theta.vercel.a
 
 Marketplace install should land on `https://<host>/<org>/<repo>` already in kiosk. No PAT, no `.env`, no `npm i`.
 
-Manifest: [`public/app-manifest.json`](public/app-manifest.json). Steps: [`docs/github-app.md`](docs/github-app.md).
+Open [`/install`](https://the-pass-theta.vercel.app/install). That page posts the manifest, converts the App, and redirects to the kiosk after GitHub install. Manifest source: [`public/app-manifest.json`](public/app-manifest.json). Notes: [`docs/github-app.md`](docs/github-app.md).
 
 Webhook: `POST /api/webhook`. Board: `GET /api/board/:owner/:repo`. Badge: `GET /api/badge?owner=&repo=`. Runtime overlay: `POST /api/runtime`.
 

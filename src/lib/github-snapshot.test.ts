@@ -20,6 +20,16 @@ describe('ticketFromGithubIssue', () => {
     expect(ticket.hasLinkedPr).toBe(false)
   })
 
+  it('accepts labels as plain strings', () => {
+    const ticket = ticketFromGithubIssue('acme', 'widgets', {
+      number: 14,
+      title: 'String labels',
+      labels: ['size:XL', 'status:in-flight'],
+    })
+    expect(ticket.size).toBe('XL')
+    expect(ticket.labels).toContain('status:in-flight')
+  })
+
   it('maps a pull request as a PR ticket', () => {
     const ticket = ticketFromGithubIssue('acme', 'widgets', {
       id: 100,

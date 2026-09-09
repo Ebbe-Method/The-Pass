@@ -60,19 +60,17 @@ Local tree on the sender VM: `/home/ubuntu/kitchen-board`. Tests: **55 passing**
 - Progress events: commit, review, CI conclusion, non-bot comment, status-label change.
 - Stale: S 45m, M 2h, L 4h, XL 8h. Waiting hot at 20m. Abandoned claim at 2h.
 - Layer B heartbeat: `<!-- kitchen:claim runtime="cursor" session="https://cursor.com/agents/bc-…" -->` in `docs/heartbeat.md`. Honest empty chip if unknown.
-- In-memory `Map` board store does **not** survive serverless isolates. Snapshot-on-install mapper exists (`ticketFromGithubIssue`); wiring to GitHub API + durable store is unfinished.
+- In-memory `Map` board store does **not** survive serverless isolates. Live boards refresh from GitHub (`GET /repos/:owner/:repo/issues`) when the cache is cold. App credentials: Vercel env + httpOnly cookie from manifest conversion.
 - Cursor GitHub MCP is `rweidnerfuseon` (no push here). **Push as `robweidner`**: Doppler `fuse-on` / `dev_personal` secret `FUSEON_GITHUB_PAT` (admin on this repo). Do not print the token. Do not store it in `git remote`.
 
 ## Unfinished (your job)
 
-1. Confirm this branch is on GitHub and open/keep a PR into `main`.
-2. Link Vercel to this GitHub repo (Diezuno `the-pass` or Ebbe team). Prefer Git deploys over file deploys.
-3. GitHub App: Rob creates from `/install` while logged in as `robweidner`. Marketplace listing is a human GitHub UI step. After install, `https://<host>/<org>/<repo>` must already be the kiosk.
-4. Durable board store + snapshot on `installation` webhook (GitHub API using App credentials).
-5. Watch protocol: `docs/watch-protocol.md` — five unprompted workdays. Do not fake the log. Name a second human after day one.
-6. Sean Ellis: `docs/pmf-survey.md` — only after real use twice in two weeks. Do not invent a score.
-7. Personalized OG/badge already have code (`api/og.ts`, `api/badge.ts`). Fixture OG shipped; live OG needs a real board snapshot.
-8. Optional polish left in the sender session: ticket title `line-clamp` / Tooltip, absolute OG URL in `index.html`, richer `/design` approval-card gallery.
+1. Confirm this branch is on GitHub and open/keep a PR into `main`. Draft PR: https://github.com/Ebbe-Method/kitchen-board/pull/1
+2. Link Vercel to this GitHub repo (Diezuno `the-pass` is file-deploy only, `link: null`. Do not deploy production from `main` while `main` is the README stub. Prefer an Ebbe git-linked project with `deploy: false`, then previews from this branch.)
+3. GitHub App: Rob creates from `/install` while logged in as `robweidner`. Marketplace listing is a human GitHub UI step. Conversion + `installation_id` redirect + GitHub snapshot are implemented; room-display env still needs `GITHUB_APP_*` (or `VERCEL_TOKEN` so conversion can write them).
+4. Watch protocol: `docs/watch-protocol.md` — five unprompted workdays. Do not fake the log. Name a second human after day one.
+5. Sean Ellis: `docs/pmf-survey.md` — only after real use twice in two weeks. Do not invent a score.
+6. Personalized OG/badge already have code (`api/og.ts`, `api/badge.ts`). Fixture OG shipped; live OG needs a real board snapshot (now refreshes from GitHub when credentials exist).
 
 ## Do not
 

@@ -2,16 +2,22 @@ import type { Ticket } from '../kiosk/types'
 import { sizeFromLabels } from './labels'
 import { applyRuntimeOverlay } from './overlay'
 
+export type GithubLabelLike = { name: string } | string
+
 export type GithubIssueLike = {
   id?: number
   number: number
   title?: string
   html_url?: string
   created_at?: string
-  labels?: { name: string }[]
+  labels?: GithubLabelLike[]
   comments?: number
   pull_request?: unknown
   body?: string | null
+}
+
+function labelName(label: GithubLabelLike): string {
+  return typeof label === 'string' ? label : label.name
 }
 
 export function ticketFromGithubIssue(
@@ -19,7 +25,7 @@ export function ticketFromGithubIssue(
   repo: string,
   issue: GithubIssueLike,
 ): Ticket {
-  const labels = (issue.labels ?? []).map((label) => label.name)
+  const labels = (issue.labels ?? []).map(labelName)
   const kind = issue.pull_request ? 'pr' : 'issue'
   const ticket: Ticket = {
     id: String(issue.id ?? issue.number),

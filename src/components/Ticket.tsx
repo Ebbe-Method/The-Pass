@@ -41,7 +41,10 @@ export function TicketCard({
     >
       <div className="ticket-perforation absolute inset-x-0 top-0 h-3 opacity-80" />
       <div className="mt-2 flex items-start justify-between gap-3">
-        <p className="font-display text-[15px] leading-snug font-semibold tracking-tight">
+        <p
+          className="font-display text-[15px] leading-snug font-semibold tracking-tight line-clamp-2"
+          title={ticket.title}
+        >
           <span className="mr-2 font-clock text-xs font-normal text-ink-soft">
             #{ticket.number}
           </span>
