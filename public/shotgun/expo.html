@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Pass — expo window</title>
+    <style>
+      html,body{margin:0;background:#100e0c;color:#f3ead7;font-family:Sora,sans-serif;min-height:100%}
+      .frame{margin:24px;padding:24px;background:#1c1814;border:1px solid #3d362e;min-height:70vh}
+      .ticket{background:#f3ead7;color:#1c140c;padding:16px;margin:12px;display:inline-block;width:280px;vertical-align:top;animation:tear .4s both}
+      .hot{box-shadow:0 0 24px #ff5a1f;outline:2px solid #ff5a1f}
+      @keyframes tear{from{transform:translateY(-80px);opacity:0}to{opacity:1}}
+      .clock{font-family:ui-monospace,monospace;font-size:28px}
+    </style>
+  </head>
+  <body>
+    <p style="letter-spacing:.3em;padding:24px 24px 0;color:#ffb347">THE PASS · EXPO</p>
+    <h1 style="padding:0 24px">Your agents are cooking.</h1>
+    <div class="frame">
+      <div class="ticket hot"><small>#3064 · waiting on you</small><p>Merge-queue attestation</p><div class="clock">25m</div></div>
+      <div class="ticket hot"><small>#1321 · stale</small><p>Evening open-loops mutex</p><div class="clock">2h</div></div>
+      <div class="ticket"><small>#3840 · cooking</small><p>Heartbeat on SessionStart</p><div class="clock">11m</div></div>
+    </div>
+  </body>
+</html>

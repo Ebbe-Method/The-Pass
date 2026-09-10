@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Pass — 15s silent loop</title>
+    <meta name="description" content="Silent 15-second loop of a ticket tearing onto the pass and going hot." />
+    <style>
+      html, body { margin: 0; background: #100e0c; color: #f3ead7; font-family: Sora, ui-sans-serif, sans-serif; overflow: hidden; height: 100%; }
+      .stage { padding: 48px; }
+      .mark { letter-spacing: .32em; color: #ffb347; font-size: 12px; }
+      h1 { font-size: 42px; margin: 8px 0 28px; }
+      .frame { background: #1c1814; border: 1px solid #3d362e; min-height: 360px; padding: 28px; }
+      .ticket { width: 320px; background: #f3ead7; color: #1c140c; padding: 20px; transform-origin: top center; animation: scene 15s ease-in-out infinite; }
+      .clock { font-family: ui-monospace, monospace; font-size: 36px; margin-top: 18px; }
+      .state { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+      @keyframes scene {
+        0% { transform: translateY(-140%) rotate(-4deg); opacity: 0; box-shadow: none; }
+        12% { transform: translateY(0) rotate(-0.4deg); opacity: 1; box-shadow: none; }
+        40% { transform: translateY(0); box-shadow: 0 0 0 0 rgb(255 90 31 / 0%); }
+        55%, 70% { box-shadow: 0 0 28px 6px rgb(255 90 31 / 55%); outline: 2px solid #ff5a1f; }
+        85% { box-shadow: 0 0 0 0 rgb(255 90 31 / 0%); outline-color: transparent; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ticket { animation: none; outline: 2px solid #ff5a1f; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <p class="mark">THE PASS · SILENT LOOP</p>
+      <h1>Your agents are cooking.</h1>
+      <div class="frame">
+        <div class="ticket">
+          <p class="state">● waiting on you</p>
+          <p>#4099 Unstick the waiting-on-you rail before dinner</p>
+          <div class="clock">22m</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
