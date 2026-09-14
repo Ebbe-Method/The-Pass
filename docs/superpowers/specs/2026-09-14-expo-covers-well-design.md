@@ -30,11 +30,11 @@ File-count via `contents` is optional later, not required to ship. Unknown cook 
 
 ## Expo, line, well
 
-**Expo (human, cap 8).** Waiting on you, green CI on a PR, `status:needs-rob`. Always on the pass — plates under the lamp. The **human meter** counts covers of every expo ticket. Over cap → slammed meter; **do not hide** these cards. Hiding “needs Rob” is how tickets go cold.
+**Expo (human, cap 8).** Waiting on you, green CI on a PR, `status:needs-rob`, **and stale**. Always on the pass — plates under the lamp. Stale is spec 1’s late lamp; it is not queued and it is not line overflow. The **human meter** counts covers of every expo ticket (including stale). Over cap → slammed meter; **do not hide** these cards. Hiding “needs Rob” or a stale plate is how tickets go cold.
 
-**Line (agents, cap 24).** Cooking: `status:in-flight`, agent runtime, open PR that is not ready to walk. The **agent meter** counts covers of every cooking ticket (on the rail and in the well). Rank hottest, then closest-to-stale. Paint cards until 24 covers fill. Overflow is not a card; it still counts on the meter so slammed can fire.
+**Line (agents, cap 24).** Cooking only: `status:in-flight`, agent runtime, open PR that is not ready to walk. Stale does not sit here. The **agent meter** counts covers of every cooking ticket (on the rail and in the well). Rank hottest, then closest-to-stale. Paint cards until 24 covers fill (greedy: skip a plate that does not fit and keep filling with later ones that do). Overflow is not a card; it still counts on the meter so slammed can fire.
 
-**Well.** Queued plus line overflow. One quiet line, e.g. `86 in the well`. This slice is count-only (no drill-in list).
+**Well.** Queued plus line overflow. Not stale. One quiet line, e.g. `86 in the well`. This slice is count-only (no drill-in list).
 
 ## The wall
 
