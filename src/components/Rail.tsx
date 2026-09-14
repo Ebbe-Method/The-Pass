@@ -25,6 +25,8 @@ export function Rail({
   layout: LayoutId
   onOpen: (row: PresentedTicket) => void
 }) {
+  if (rows.length === 0) return <EmptyPass />
+
   if (layout === 'pits') {
     const waiting = rows.filter(
       (r) => r.state === 'waiting_on_you' || r.state === 'stale',

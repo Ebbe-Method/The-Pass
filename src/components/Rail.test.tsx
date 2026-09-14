@@ -22,6 +22,18 @@ function ticket(partial: Partial<Ticket> = {}): Ticket {
   }
 }
 
+describe('Rail empty layouts', () => {
+  it('shows EmptyPass on pits layout with no rows', () => {
+    render(<Rail rows={[]} layout="pits" onOpen={() => undefined} />)
+    expect(screen.getByText(/The pass is clear/i)).toBeInTheDocument()
+  })
+
+  it('shows EmptyPass on stations layout with no rows', () => {
+    render(<Rail rows={[]} layout="stations" onOpen={() => undefined} />)
+    expect(screen.getByText(/The pass is clear/i)).toBeInTheDocument()
+  })
+})
+
 describe('Rail expo layout', () => {
   it('does not call the pass clear when the well has tickets', () => {
     const now = Date.parse('2026-09-09T12:10:00.000Z')
