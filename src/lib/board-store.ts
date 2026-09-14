@@ -2,7 +2,7 @@ import type { BoardSnapshot, Ticket } from '../kiosk/types'
 import type { CursorAgent } from './cursor-match.ts'
 import { classifyGithubEvent } from './github-events.ts'
 import type { IncomingGithubEvent } from './github-events.ts'
-import { sizeFromLabels } from './labels.ts'
+import { sizeForTicket, sizeFromLabels } from './labels.ts'
 import { applyRuntimeOverlay } from './overlay.ts'
 
 const boards = new Map<string, BoardSnapshot>()
@@ -36,11 +36,19 @@ function ticketFromPayload(
         comments?: number
         pull_request?: unknown
         draft?: boolean
+        body?: string | null
+        milestone?: { title?: string } | null
       }
     | undefined
   if (!issue?.number) return null
   const kind = payload.pull_request || issue.pull_request ? 'pr' : 'issue'
   const labels = (issue.labels ?? []).map((l) => l.name)
+  const incomingSize = sizeForTicket({
+    kind,
+    labels,
+    body: 'body' in issue ? (issue.body as string | null | undefined) : undefined,
+    milestone: 'milestone' in issue ? issue.milestone : undefined,
+  })
   return {
     id: String(issue.id ?? issue.number),
     number: issue.number,
@@ -48,7 +56,7 @@ function ticketFromPayload(
     title: issue.title ?? 'Untitled',
     url: issue.html_url ?? `https://github.com/${owner}/${repo}/issues/${issue.number}`,
     openedAt: issue.created_at ?? new Date().toISOString(),
-    size: sizeFromLabels(labels),
+    size: incomingSize,
     labels,
     events: [],
     ci: 'none',
@@ -90,7 +98,7 @@ export function applyGithubEvent(
       ...prior,
       title: incoming.title,
       labels: incoming.labels,
-      size: incoming.size,
+      size: sizeFromLabels(incoming.labels) ?? prior.size,
       commentCount: incoming.commentCount,
       hasLinkedPr: incoming.hasLinkedPr || prior.hasLinkedPr,
       events: [...prior.events],

@@ -46,4 +46,34 @@ describe('ticketFromGithubIssue', () => {
     expect(ticket.size).toBe('L')
     expect(ticket.runtime).toBe('unknown')
   })
+
+  it('infers S for an unlabeled short PR', () => {
+    const ticket = ticketFromGithubIssue('acme', 'widgets', {
+      number: 20,
+      title: 'Typo',
+      html_url: 'https://github.com/acme/widgets/pull/20',
+      labels: [],
+      pull_request: { url: 'https://api.github.com/repos/acme/widgets/pulls/20' },
+      body: 'fix typo',
+    })
+    expect(ticket.size).toBe('S')
+  })
+
+  it('infers XL from epic or milestone when unlabeled', () => {
+    const epic = ticketFromGithubIssue('acme', 'widgets', {
+      number: 21,
+      title: 'Platform rewrite',
+      labels: ['epic'],
+      body: 'hi',
+    })
+    expect(epic.size).toBe('XL')
+    const milestoned = ticketFromGithubIssue('acme', 'widgets', {
+      number: 22,
+      title: 'Launch work',
+      labels: [],
+      body: 'hi',
+      milestone: { title: 'v2' },
+    })
+    expect(milestoned.size).toBe('XL')
+  })
 })
