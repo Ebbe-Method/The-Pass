@@ -5,10 +5,12 @@ export function HeatClock({
   ms,
   label,
   hot = false,
+  format = formatClock,
 }: {
   ms: number
   label: string
   hot?: boolean
+  format?: (ms: number) => string
 }) {
   return (
     <div className="flex flex-col gap-0.5">
@@ -21,7 +23,7 @@ export function HeatClock({
           hot ? 'text-heat-hot' : 'text-ink',
         )}
       >
-        {formatClock(ms)}
+        {format(ms)}
       </span>
     </div>
   )

@@ -1,8 +1,9 @@
 import { ActorChip } from '@/components/ActorChip'
 import { HeatClock } from '@/components/HeatClock'
 import { STATE_LABEL } from '@/lib/freshness'
+import { formatCountdown } from '@/lib/format'
+import { kitchenChip } from '@/lib/labels'
 import type { PresentedTicket } from '@/lib/present'
-import { lastProgressEvent } from '@/lib/progress'
 import { cn } from '@/lib/utils'
 
 function tiltFor(id: string): string {
@@ -25,16 +26,17 @@ export function TicketCard({
   row: PresentedTicket
   onOpen: (row: PresentedTicket) => void
 }) {
-  const { ticket, state, heat, waitMs, freshMs, actors } = row
-  const last = lastProgressEvent(ticket)
+  const { ticket, state, heat, waitMs, remainingMs, actors } = row
+  const status = kitchenChip(ticket.labels)
   return (
     <button
       type="button"
       onClick={() => onOpen(row)}
       style={{ ['--tilt' as string]: tiltFor(ticket.id) }}
       data-heat={heat}
+      data-size={ticket.size}
       className={cn(
-        'ticket relative flex w-full flex-col gap-4 rounded-sm bg-paper p-4 text-left text-ink',
+        'ticket relative flex h-full w-full flex-col gap-4 rounded-sm bg-paper p-4 text-left text-ink',
         heat === 'hot' && 'ring-2 ring-heat',
         heat === 'warm' && 'ring-1 ring-lamp/80',
       )}
@@ -64,10 +66,15 @@ export function TicketCard({
         </span>
       </div>
       <div className="flex items-end justify-between gap-4">
+        <HeatClock
+          ms={remainingMs}
+          label="walk"
+          hot={heat === 'hot'}
+          format={formatCountdown}
+        />
         <HeatClock ms={waitMs} label="open" />
-        <HeatClock ms={freshMs} label="quiet" hot={heat === 'hot'} />
       </div>
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="ticket-chips flex flex-wrap items-center gap-1.5">
         {actors.length === 0 || actors.every((a) => a === 'unknown') ? (
           <ActorChip runtime="unknown" />
         ) : (
@@ -77,11 +84,17 @@ export function TicketCard({
               <ActorChip key={runtime} runtime={runtime} compact />
             ))
         )}
-        {last && (
-          <span className="ml-auto font-clock text-[10px] tracking-wide text-ink-soft uppercase">
-            {last.label}
+        <span className="rounded-full bg-black/5 px-2 py-0.5 font-clock text-[10px] tracking-[0.12em] text-ink-soft uppercase">
+          {ticket.kind === 'pr' ? 'PR' : 'issue'}
+        </span>
+        <span className="rounded-full bg-black/5 px-2 py-0.5 font-clock text-[10px] tracking-[0.12em] text-ink-soft uppercase">
+          {ticket.size}
+        </span>
+        {status ? (
+          <span className="rounded-full bg-black/5 px-2 py-0.5 font-clock text-[10px] tracking-[0.12em] text-ink-soft uppercase">
+            {status}
           </span>
-        )}
+        ) : null}
       </div>
     </button>
   )

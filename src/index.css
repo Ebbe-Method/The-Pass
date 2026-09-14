@@ -95,3 +95,56 @@ html[data-distance="10ft"] {
     0 40px 80px rgb(0 0 0 / 55%);
   border: 1px solid rgb(255 255 255 / 8%);
 }
+
+.ticket[data-size="S"] {
+  min-height: 9rem;
+}
+.ticket[data-size="M"] {
+  min-height: 11rem;
+}
+.ticket[data-size="L"] {
+  min-height: 13rem;
+}
+.ticket[data-size="XL"] {
+  min-height: 16rem;
+}
+
+.pass-expo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.pass-expo > .ticket[data-size="S"] {
+  width: 10rem;
+}
+.pass-expo > .ticket[data-size="M"] {
+  width: 16rem;
+}
+.pass-expo > .ticket[data-size="L"] {
+  width: 24rem;
+}
+.pass-expo > .ticket[data-size="XL"] {
+  width: min(36rem, 100%);
+}
+
+.pass-line {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+}
+.pass-line > .ticket[data-size="S"] {
+  grid-column: span 1;
+}
+.pass-line > .ticket[data-size="M"] {
+  grid-column: span 2;
+}
+.pass-line > .ticket[data-size="L"] {
+  grid-column: span 3;
+}
+.pass-line > .ticket[data-size="XL"] {
+  grid-column: span 6;
+}
+
+html[data-distance="10ft"] .ticket-chips {
+  display: none;
+}
