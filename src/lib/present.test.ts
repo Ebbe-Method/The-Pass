@@ -49,4 +49,48 @@ describe('sortPresented', () => {
       'q',
     ])
   })
+
+  it('exposes remaining time until the size goes stale', () => {
+    const now = Date.parse('2026-09-09T12:15:00.000Z')
+    const row = presentTicket(
+      ticket({
+        size: 'S',
+        labels: ['status:in-flight'],
+        commentCount: 1,
+        hasLinkedPr: true,
+      }),
+      now,
+    )
+    expect(row.remainingMs).toBe(30 * 60 * 1000)
+  })
+
+  it('orders the same heat by closest to stale', () => {
+    const now = Date.parse('2026-09-09T12:20:00.000Z')
+    const later = presentTicket(
+      ticket({
+        id: 'later',
+        number: 2,
+        size: 'L',
+        labels: ['status:in-flight'],
+        commentCount: 1,
+        hasLinkedPr: true,
+      }),
+      now,
+    )
+    const sooner = presentTicket(
+      ticket({
+        id: 'sooner',
+        number: 3,
+        size: 'S',
+        labels: ['status:in-flight'],
+        commentCount: 1,
+        hasLinkedPr: true,
+      }),
+      now,
+    )
+    expect(sortPresented([later, sooner]).map((r) => r.ticket.id)).toEqual([
+      'sooner',
+      'later',
+    ])
+  })
 })

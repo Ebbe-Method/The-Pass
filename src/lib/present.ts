@@ -1,5 +1,5 @@
 import type { ActorRuntime, Heat, Ticket, TicketState } from '../kiosk/types'
-import { freshnessMs, heatFor, stateFor } from './freshness.ts'
+import { freshnessMs, heatFor, remainingToStaleMs, stateFor } from './freshness.ts'
 
 export type PresentedTicket = {
   ticket: Ticket
@@ -7,10 +7,11 @@ export type PresentedTicket = {
   heat: Heat
   waitMs: number
   freshMs: number
+  remainingMs: number
   actors: ActorRuntime[]
 }
 
-const HEAT_RANK: Record<Heat, number> = { hot: 0, warm: 1, cool: 2 }
+export const HEAT_RANK: Record<Heat, number> = { hot: 0, warm: 1, cool: 2 }
 
 export function actorsOn(ticket: Ticket): ActorRuntime[] {
   const seen = new Set<ActorRuntime>()
@@ -28,6 +29,7 @@ export function presentTicket(ticket: Ticket, now: number): PresentedTicket {
     heat: heatFor(ticket, now),
     waitMs: Math.max(0, now - Date.parse(ticket.openedAt)),
     freshMs: freshnessMs(ticket, now),
+    remainingMs: remainingToStaleMs(ticket, now),
     actors: actorsOn(ticket),
   }
 }
@@ -43,6 +45,8 @@ export function sortPresented(rows: PresentedTicket[]): PresentedTicket[] {
   return [...rows].sort((a, b) => {
     const heat = HEAT_RANK[a.heat] - HEAT_RANK[b.heat]
     if (heat !== 0) return heat
-    return b.freshMs - a.freshMs
+    const remain = a.remainingMs - b.remainingMs
+    if (remain !== 0) return remain
+    return a.ticket.number - b.ticket.number
   })
 }
