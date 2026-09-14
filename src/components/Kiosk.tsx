@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ActorChip } from '@/components/ActorChip'
+import { CoverMeter } from '@/components/CoverMeter'
 import { Rail } from '@/components/Rail'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import type { Distance, LayoutId, Ticket } from '@/kiosk/types'
+import { layoutPass } from '@/lib/pass-layout'
 import { presentTicket, sortPresented, visibleTickets } from '@/lib/present'
 import type { PresentedTicket } from '@/lib/present'
 import { cn } from '@/lib/utils'
@@ -44,7 +46,7 @@ export function Kiosk({
     return sortPresented(visible.map((ticket) => presentTicket(ticket, now)))
   }, [tickets, elapsed, now])
 
-  const hotCount = rows.filter((r) => r.heat === 'hot').length
+  const pass = useMemo(() => layoutPass(rows), [rows])
 
   return (
     <div className="flex min-h-full flex-col">
@@ -66,13 +68,19 @@ export function Kiosk({
             )}
           </p>
         </div>
-        <div className="text-right">
-          <p className="font-clock text-4xl tabular-nums text-heat">
-            {String(hotCount).padStart(2, '0')}
-          </p>
-          <p className="text-[11px] tracking-[0.18em] text-paper/45 uppercase">
-            hot on the pass
-          </p>
+        <div className="flex items-end gap-6">
+          <CoverMeter
+            label="expo"
+            used={pass.humanCovers}
+            cap={pass.humanCap}
+            slammed={pass.humanSlammed}
+          />
+          <CoverMeter
+            label="line"
+            used={pass.agentCovers}
+            cap={pass.agentCap}
+            slammed={pass.agentSlammed}
+          />
         </div>
       </header>
 

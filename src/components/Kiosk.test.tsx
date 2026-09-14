@@ -30,6 +30,24 @@ describe('Kiosk magic moment', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows expo/line cover meters and a well count on the demo pass', () => {
+    render(
+      <Kiosk
+        tickets={demoTickets}
+        owner="fuseon-connections"
+        repo="fuse-on-v2"
+        demo
+      />,
+    )
+    expect(screen.getByText('8 / 8')).toBeInTheDocument()
+    expect(screen.getByText('5 / 24')).toBeInTheDocument()
+    expect(screen.getByText(/1 in the well/i)).toBeInTheDocument()
+    expect(
+      screen.queryByText(/Document the heartbeat snippet/i),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText(/hot on the pass/i)).not.toBeInTheDocument()
+  })
+
   it('opens ticket actions with a GitHub link', async () => {
     const user = userEvent.setup()
     render(

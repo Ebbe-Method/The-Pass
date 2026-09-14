@@ -53,7 +53,7 @@ describe('live repo kiosk', () => {
               url: 'https://github.com/acme/widgets/issues/7',
               openedAt: new Date().toISOString(),
               size: 'S',
-              labels: [],
+              labels: ['status:in-flight'],
               events: [],
               ci: 'none',
               hasLinkedPr: false,
