@@ -1,3 +1,10 @@
+export function formatCountdown(ms: number): string {
+  if (ms <= 0) return 'late'
+  const totalMinutes = Math.floor(ms / 60_000)
+  if (totalMinutes < 1) return '<1m'
+  return formatClock(ms)
+}
+
 export function formatClock(ms: number): string {
   const totalMinutes = Math.floor(ms / 60_000)
   if (totalMinutes < 1) return 'just in'

@@ -1,5 +1,5 @@
 import type { Ticket } from '../kiosk/types'
-import { sizeFromLabels } from './labels.ts'
+import { sizeForTicket } from './labels.ts'
 import { applyRuntimeOverlay } from './overlay.ts'
 
 export type GithubLabelLike = { name: string } | string
@@ -14,6 +14,7 @@ export type GithubIssueLike = {
   comments?: number
   pull_request?: unknown
   body?: string | null
+  milestone?: { title?: string } | null
 }
 
 function labelName(label: GithubLabelLike): string {
@@ -36,7 +37,12 @@ export function ticketFromGithubIssue(
       issue.html_url ??
       `https://github.com/${owner}/${repo}/${kind === 'pr' ? 'pull' : 'issues'}/${issue.number}`,
     openedAt: issue.created_at ?? new Date().toISOString(),
-    size: sizeFromLabels(labels),
+    size: sizeForTicket({
+      kind,
+      labels,
+      body: issue.body,
+      milestone: issue.milestone,
+    }),
     labels,
     events: [],
     ci: 'none',

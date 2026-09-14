@@ -1,6 +1,7 @@
 import { EmptyPass } from '@/components/EmptyPass'
 import { TicketCard } from '@/components/Ticket'
 import type { LayoutId } from '@/kiosk/types'
+import { layoutPass } from '@/lib/pass-layout'
 import type { PresentedTicket } from '@/lib/present'
 import { cn } from '@/lib/utils'
 
@@ -24,8 +25,6 @@ export function Rail({
   layout: LayoutId
   onOpen: (row: PresentedTicket) => void
 }) {
-  if (rows.length === 0) return <EmptyPass />
-
   if (layout === 'pits') {
     const waiting = rows.filter(
       (r) => r.state === 'waiting_on_you' || r.state === 'stale',
@@ -61,11 +60,54 @@ export function Rail({
     )
   }
 
+  const pass = layoutPass(rows)
+  if (
+    pass.expo.length === 0 &&
+    pass.line.length === 0 &&
+    pass.wellCount === 0
+  ) {
+    return <EmptyPass />
+  }
+
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {rows.map((row) => (
-        <TicketCard key={row.ticket.id} row={row} onOpen={onOpen} />
-      ))}
+    <div className="flex flex-col gap-6">
+      <section>
+        <header className="mb-3 flex items-baseline justify-between">
+          <h2 className="font-display text-lg">Expo</h2>
+          <p className="font-clock text-[11px] tracking-[0.16em] text-paper/45 uppercase">
+            Walk these
+          </p>
+        </header>
+        {pass.expo.length === 0 ? (
+          <p className="text-sm text-paper/50">Nothing under the lamp.</p>
+        ) : (
+          <div className="pass-expo">
+            {pass.expo.map((row) => (
+              <TicketCard key={row.ticket.id} row={row} onOpen={onOpen} />
+            ))}
+          </div>
+        )}
+      </section>
+      <section>
+        <header className="mb-3 flex items-baseline justify-between">
+          <h2 className="font-display text-lg">Line</h2>
+          <p className="font-clock text-[11px] tracking-[0.16em] text-paper/45 uppercase">
+            On the fire
+          </p>
+        </header>
+        {pass.line.length === 0 ? (
+          <p className="text-sm text-paper/50">No tickets on the line.</p>
+        ) : (
+          <div className="pass-line">
+            {pass.line.map((row) => (
+              <TicketCard key={row.ticket.id} row={row} onOpen={onOpen} />
+            ))}
+          </div>
+        )}
+      </section>
+      <p className="font-clock text-sm tracking-[0.08em] text-paper/45">
+        {pass.wellCount} in the well
+      </p>
     </div>
   )
 }

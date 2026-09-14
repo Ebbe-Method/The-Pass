@@ -25,6 +25,41 @@ describe('applyGithubEvent', () => {
     expect(getBoard('acme', 'widgets')?.tickets[0].title).toBe('Heat the pass')
   })
 
+  it('keeps an inferred size when a later webhook has no size label', () => {
+    applyGithubEvent('acme', 'infer-lab', {
+      name: 'issues',
+      payload: {
+        action: 'opened',
+        issue: {
+          id: 11,
+          number: 91,
+          title: 'Long unlabeled',
+          html_url: 'https://github.com/acme/infer-lab/issues/91',
+          created_at: '2026-09-09T12:00:00.000Z',
+          labels: [],
+          comments: 0,
+          body: 'x'.repeat(1500),
+        },
+      },
+    })
+    const snapshot = applyGithubEvent('acme', 'infer-lab', {
+      name: 'issues',
+      payload: {
+        action: 'labeled',
+        issue: {
+          id: 11,
+          number: 91,
+          title: 'Long unlabeled',
+          html_url: 'https://github.com/acme/infer-lab/issues/91',
+          labels: [{ name: 'status:in-flight' }],
+          comments: 0,
+        },
+        label: { name: 'status:in-flight' },
+      },
+    })
+    expect(snapshot.tickets[0].size).toBe('L')
+  })
+
   it('applies a kitchen claim comment as the runtime overlay', () => {
     applyGithubEvent('acme', 'claim-lab', {
       name: 'issues',
