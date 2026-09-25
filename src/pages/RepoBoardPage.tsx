@@ -22,10 +22,8 @@ export function RepoBoardPage() {
           setDemo(false)
         })
         .catch(() => {
-          if (!cancelled) {
-            setTickets([])
-            setDemo(false)
-          }
+          if (cancelled) return
+          setDemo(false)
         })
     }
     load()

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Ticket } from '../kiosk/types'
 import { ABANDONED_MS, STALE_MS, WAITING_HOT_MS } from '../kiosk/types'
-import { freshnessMs, heatFor, stateFor } from './freshness'
+import { freshnessMs, heatFor, remainingToStaleMs, stateFor } from './freshness'
 
 function ticket(partial: Partial<Ticket> = {}): Ticket {
   return {
@@ -125,5 +125,29 @@ describe('heatFor', () => {
       hasLinkedPr: false,
     })
     expect(heatFor(t, T0 + ABANDONED_MS)).toBe('hot')
+  })
+})
+
+describe('remainingToStaleMs', () => {
+  it('counts down the size budget from last progress', () => {
+    const t = ticket({
+      size: 'S',
+      labels: ['status:in-flight'],
+      commentCount: 3,
+      hasLinkedPr: true,
+    })
+    expect(remainingToStaleMs(t, T0 + 15 * 60 * 1000)).toBe(30 * 60 * 1000)
+    expect(remainingToStaleMs(t, T0 + STALE_MS.S)).toBe(0)
+    expect(remainingToStaleMs(t, T0 + STALE_MS.S + 60_000)).toBe(0)
+  })
+
+  it('uses the XL budget when the plate is XL', () => {
+    const t = ticket({
+      size: 'XL',
+      labels: ['status:in-flight'],
+      commentCount: 3,
+      hasLinkedPr: true,
+    })
+    expect(remainingToStaleMs(t, T0 + STALE_MS.S)).toBe(STALE_MS.XL - STALE_MS.S)
   })
 })

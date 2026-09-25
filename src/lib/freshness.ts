@@ -6,6 +6,10 @@ export function freshnessMs(ticket: Ticket, now: number): number {
   return Math.max(0, now - Date.parse(lastProgressAt(ticket)))
 }
 
+export function remainingToStaleMs(ticket: Ticket, now: number): number {
+  return Math.max(0, STALE_MS[ticket.size] - freshnessMs(ticket, now))
+}
+
 function isWaitingOnYou(ticket: Ticket): boolean {
   if (ticket.labels.includes('status:needs-rob')) return true
   return ticket.kind === 'pr' && ticket.ci === 'green'

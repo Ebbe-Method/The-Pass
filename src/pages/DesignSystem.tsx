@@ -6,6 +6,7 @@ import { TicketCard } from '@/components/Ticket'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { demoTickets } from '@/fixtures/tickets'
+import { formatCountdown } from '@/lib/format'
 import { presentTicket } from '@/lib/present'
 
 export function DesignPage() {
@@ -58,6 +59,46 @@ export function DesignPage() {
           <TicketCard row={waiting} onOpen={() => undefined} />
           <TicketCard row={cooking} onOpen={() => undefined} />
           <TicketCard row={stale} onOpen={() => undefined} />
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl">Covers</h2>
+        <p className="mt-2 text-sm text-paper/60">
+          S is a side. XL is a banquet. The loud clock counts down to stale.
+        </p>
+        <div className="pass-line mt-4">
+          {(
+            [
+              ['S', 'Side (S)'],
+              ['M', 'Plate (M)'],
+              ['L', 'Board (L)'],
+              ['XL', 'Banquet (XL)'],
+            ] as const
+          ).map(([size, title], index) => (
+            <TicketCard
+              key={size}
+              row={presentTicket(
+                {
+                  ...(demoTickets.find((t) => t.id === 'cursor-live') ??
+                    demoTickets[2]),
+                  id: `cover-${size}`,
+                  number: 500 + index,
+                  size,
+                  title,
+                },
+                now,
+              )}
+              onOpen={() => undefined}
+            />
+          ))}
+        </div>
+        <div className="mt-6 rounded-md bg-paper p-4 text-ink">
+          <HeatClock
+            ms={12 * 60 * 1000}
+            label="walk"
+            format={formatCountdown}
+          />
         </div>
       </section>
 
