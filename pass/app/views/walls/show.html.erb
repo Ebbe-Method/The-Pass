@@ -1,0 +1,95 @@
+<% content_for :title, "The Pass" %>
+<header class="pass-header">
+  <div>
+    <p class="eyebrow">The Pass</p>
+    <h1>Your agents are cooking.</h1>
+    <p class="lede">
+      Don’t let tickets go cold.
+      <span class="repo"><%= @owner %>/<%= @repo %></span>
+      <% if @demo %>
+        <span class="demo-flag">Demo · no GitHub login</span>
+      <% elsif @refresh_failed %>
+        <span class="demo-flag">Showing the last board</span>
+      <% end %>
+    </p>
+  </div>
+  <div class="meters">
+    <div class="cover-meter <%= "is-slammed" if @pass.human_slammed %>">
+      <p class="meter-value"><%= @pass.human_covers %> / <%= @pass.human_cap %></p>
+      <p class="meter-label">expo<%= " · slammed" if @pass.human_slammed %></p>
+    </div>
+    <div class="cover-meter <%= "is-slammed" if @pass.agent_slammed %>">
+      <p class="meter-value"><%= @pass.agent_covers %> / <%= @pass.agent_cap %></p>
+      <p class="meter-label">line<%= " · slammed" if @pass.agent_slammed %></p>
+    </div>
+  </div>
+</header>
+
+<main class="pass-frame" data-controller="clock">
+  <% if @rows.empty? %>
+    <div class="empty-pass">
+      <div class="empty-rule"></div>
+      <p class="empty-title">The pass is clear.</p>
+      <p>Nothing is waiting on you. When a ticket goes stale, it lands here first.</p>
+    </div>
+  <% elsif @layout == "pits" %>
+    <div class="pits">
+      <%= render "pit", title: "Waiting", hint: "Needs a click", rows: @rows.select { |row| %w[waiting_on_you stale].include?(row.state) } %>
+      <%= render "pit", title: "Cooking", hint: "In motion", rows: @rows.select { |row| %w[cooking queued].include?(row.state) } %>
+    </div>
+  <% elsif @layout == "stations" %>
+    <div class="stations">
+      <% @rows.group_by { |row| row.ticket.runtime.presence || "unknown" }.each do |station, list| %>
+        <section class="station">
+          <h2><%= station %></h2>
+          <div class="station-list">
+            <% list.each do |row| %>
+              <%= render "ticket", row: row, ticket: row.ticket %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <section>
+      <header class="rail-header">
+        <h2>Expo</h2>
+        <p>Walk these</p>
+      </header>
+      <% if @pass.expo.empty? %>
+        <p class="quiet">Nothing under the lamp.</p>
+      <% else %>
+        <div class="pass-expo">
+          <% @pass.expo.each do |row| %>
+            <%= render "ticket", row: row, ticket: row.ticket %>
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+    <section>
+      <header class="rail-header">
+        <h2>Line</h2>
+        <p>On the fire</p>
+      </header>
+      <% if @pass.line.empty? %>
+        <p class="quiet">No tickets on the line.</p>
+      <% else %>
+        <div class="pass-line">
+          <% @pass.line.each do |row| %>
+            <%= render "ticket", row: row, ticket: row.ticket %>
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+    <p class="well"><%= @pass.well_count %> in the well</p>
+  <% end %>
+</main>
+
+<footer class="pass-footer">
+  <nav>
+    <% %w[expo pits stations].each do |layout| %>
+      <%= link_to layout, layout_path(layout), class: ("is-on" if @layout == layout) %>
+    <% end %>
+  </nav>
+  <%= link_to(@distance, url_for(request.query_parameters.merge(layout: @layout, distance: (@distance == "2ft" ? "10ft" : "2ft")))) %>
+</footer>
