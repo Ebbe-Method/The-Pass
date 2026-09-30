@@ -17,12 +17,21 @@ class InstallTest < ActionDispatch::IntegrationTest
     get "/install"
 
     assert_response :success
-    assert_match "http://www.example.com/api/webhook", response.body
-    assert_match "http://www.example.com/install", response.body
-    assert_match "http://www.example.com/auth/github/callback", response.body
+    manifests = css_select("input[name=manifest]").map { |node| JSON.parse(node["value"]) }
+    assert_equal 2, manifests.size
+    manifests.each do |manifest|
+      assert_equal "The Pass Eddy", manifest["name"]
+      assert_equal "http://www.example.com", manifest["url"]
+      assert_equal "http://www.example.com/api/webhook", manifest.dig("hook_attributes", "url")
+      assert_equal "http://www.example.com/install", manifest["redirect_url"]
+      assert_equal "http://www.example.com/install", manifest["setup_url"]
+      assert_equal [ "http://www.example.com/auth/github/callback" ], manifest["callback_urls"]
+      assert_no_match(/vercel/i, JSON.generate(manifest))
+    end
     assert_no_match(/the-pass-theta/, response.body)
     assert_no_match(/kitchen-board-sigma/, response.body)
     assert_select "button", text: "Create the GitHub App"
+    assert_select "button", text: "Or create under your personal account"
   end
 
   test "a manifest code stores the App and sends the browser to install" do
