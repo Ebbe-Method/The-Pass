@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   root "walls#demo"
+  get "install", to: "installs#show", as: :install
+  get "auth/github", to: "sessions#new", as: :github_sign_in
+  get "auth/github/callback", to: "sessions#create", as: :github_callback
+  delete "sign-out", to: "sessions#destroy", as: :sign_out
   post "api/webhook", to: "webhooks#create"
   get ":owner/:repo", to: "walls#show", as: :repo_board
 end

@@ -10,6 +10,13 @@ class WebhooksController < ApplicationController
     end
 
     payload = JSON.parse(body)
+    event = request.headers["X-GitHub-Event"].to_s
+    if event == "installation" || event == "installation_repositories"
+      Kitchen::InstallFlow.record_payload!(payload)
+      head :ok
+      return
+    end
+
     repository = payload["repository"] || {}
     owner = repository.dig("owner", "login")
     repo = repository["name"]

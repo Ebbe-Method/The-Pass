@@ -12,10 +12,11 @@ module Kitchen
       def github
         return current if current
 
+        app = GithubApp.record
         Github.new(
-          app_id: read("GITHUB_APP_ID"),
-          private_key: Kitchen::Github.normalize_key(read("GITHUB_APP_PRIVATE_KEY")),
-          webhook_secret: read("GITHUB_WEBHOOK_SECRET").to_s,
+          app_id: app&.github_id || read("GITHUB_APP_ID"),
+          private_key: app&.pem.presence || Kitchen::Github.normalize_key(read("GITHUB_APP_PRIVATE_KEY")),
+          webhook_secret: app&.webhook_secret.presence || read("GITHUB_WEBHOOK_SECRET").to_s,
           installation_id: read("GITHUB_INSTALLATION_ID")
         )
       end

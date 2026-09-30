@@ -12,12 +12,13 @@ class WallsController < ApplicationController
     @owner = params[:owner].to_s
     @repo = params[:repo].to_s
     stored = Board.find_for(@owner, @repo)
-    if Kitchen::Credentials.github.complete?
+    access = Kitchen::Access.for(@owner, @repo)
+    if access
       begin
         Kitchen::Refresh.call(
           owner: @owner,
           repo: @repo,
-          credentials: Kitchen::Credentials.github,
+          credentials: access,
           http: github_http
         )
       rescue StandardError

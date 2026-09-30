@@ -10,13 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_29_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_140000) do
   create_table "boards", force: :cascade do |t|
     t.string "owner", null: false
     t.string "repo", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner", "repo"], name: "index_boards_on_owner_and_repo", unique: true
+  end
+
+  create_table "github_apps", force: :cascade do |t|
+    t.integer "github_id", null: false
+    t.string "slug"
+    t.string "name"
+    t.string "html_url"
+    t.text "pem", null: false
+    t.string "webhook_secret", default: "", null: false
+    t.string "client_id"
+    t.string "client_secret"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["github_id"], name: "index_github_apps_on_github_id", unique: true
+  end
+
+  create_table "installation_repos", force: :cascade do |t|
+    t.integer "installation_id", null: false
+    t.string "owner", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["installation_id"], name: "index_installation_repos_on_installation_id"
+    t.index ["owner", "name"], name: "index_installation_repos_on_owner_and_name", unique: true
+  end
+
+  create_table "installations", force: :cascade do |t|
+    t.integer "github_app_id"
+    t.integer "github_installation_id", null: false
+    t.string "account_login"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["github_app_id"], name: "index_installations_on_github_app_id"
+    t.index ["github_installation_id"], name: "index_installations_on_github_installation_id", unique: true
   end
 
   create_table "progress_events", force: :cascade do |t|
@@ -52,6 +86,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_120000) do
     t.index ["board_id"], name: "index_tickets_on_board_id"
   end
 
+  add_foreign_key "installation_repos", "installations"
+  add_foreign_key "installations", "github_apps"
   add_foreign_key "progress_events", "tickets"
   add_foreign_key "tickets", "boards"
 end

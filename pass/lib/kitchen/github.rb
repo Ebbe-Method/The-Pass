@@ -32,6 +32,65 @@ module Kitchen
       body.fetch("token")
     end
 
+    def self.convert_manifest(code, http:)
+      response = http.call(
+        "#{API}/app-manifests/#{escape(code)}/conversions",
+        method: "POST",
+        headers: {
+          "Accept" => "application/vnd.github+json",
+          "X-GitHub-Api-Version" => "2022-11-28",
+          "User-Agent" => "the-pass-kiosk"
+        }
+      )
+      raise Error, "manifest conversion failed (#{response.status})" unless response.ok?
+
+      body = response.json
+      raise Error, "manifest conversion missing id or pem" if body["id"].blank? || body["pem"].blank?
+
+      body
+    end
+
+    def self.exchange_user_token(client_id:, client_secret:, code:, http:)
+      response = http.call(
+        "https://github.com/login/oauth/access_token",
+        method: "POST",
+        headers: {
+          "Accept" => "application/json",
+          "Content-Type" => "application/json",
+          "User-Agent" => "the-pass-kiosk"
+        },
+        body: JSON.generate(client_id: client_id, client_secret: client_secret, code: code)
+      )
+      raise Error, "GitHub sign-in failed (#{response.status})" unless response.ok?
+
+      token = response.json["access_token"]
+      raise Error, "GitHub sign-in missing access token" if token.blank?
+
+      token
+    end
+
+    def self.current_user(token, http)
+      json("/user", token, http)
+    end
+
+    def self.list_installation_repositories(token:, http:)
+      repos = []
+      page = 1
+      while page <= 5
+        body = json("/installation/repositories?per_page=100&page=#{page}", token, http)
+        batch = body["repositories"] || []
+        batch.each do |repo|
+          owner = repo.dig("owner", "login").presence || repo["full_name"].to_s.split("/").first
+          name = repo["name"]
+          repos << { owner: owner, name: name } if owner.present? && name.present?
+        end
+        break if batch.length < 100
+
+        page += 1
+      end
+      repos
+    end
+
     def self.list_open_issues(token:, owner:, repo:, http:)
       issues = []
       page = 1

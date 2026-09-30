@@ -92,4 +92,5 @@
     <% end %>
   </nav>
   <%= link_to(@distance, url_for(request.query_parameters.merge(layout: @layout, distance: (@distance == "2ft" ? "10ft" : "2ft")))) %>
+  <%= link_to "Put it on a repo", install_path %>
 </footer>
