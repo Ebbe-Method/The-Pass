@@ -3,7 +3,7 @@ module Kitchen
     def self.build(host)
       root = host.to_s.sub(%r{/+\z}, "")
       {
-        "name" => "The Pass",
+        "name" => "The Pass Eddy",
         "url" => root,
         "hook_attributes" => { "url" => "#{root}/api/webhook", "active" => true },
         "redirect_url" => "#{root}/install",
