@@ -1,0 +1,15 @@
+<section class="pit <%= "is-empty" if rows.empty? %>">
+  <header class="rail-header">
+    <h2><%= title %></h2>
+    <p><%= hint %></p>
+  </header>
+  <% if rows.empty? %>
+    <p class="quiet">None.</p>
+  <% else %>
+    <div class="pit-list">
+      <% rows.each do |row| %>
+        <%= render "ticket", row: row, ticket: row.ticket %>
+      <% end %>
+    </div>
+  <% end %>
+</section>

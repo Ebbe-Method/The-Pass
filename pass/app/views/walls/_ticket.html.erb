@@ -1,0 +1,50 @@
+<% progress_at = Kitchen::Progress.last_at(ticket) %>
+<a
+  class="ticket"
+  href="<%= ticket.url %>"
+  target="_blank"
+  rel="noreferrer"
+  data-clock
+  data-opened-at="<%= clock_iso(ticket.opened_at) %>"
+  data-progress-at="<%= clock_iso(progress_at) %>"
+  data-size="<%= ticket.size %>"
+  data-kind="<%= ticket.kind %>"
+  data-ci="<%= ticket.ci %>"
+  data-comments="<%= ticket.comment_count.to_i %>"
+  data-linked="<%= ticket.has_linked_pr %>"
+  data-labels="<%= ticket.labels.to_json %>"
+  data-heat="<%= row.heat %>"
+  data-state="<%= row.state %>"
+  <% if ticket.respond_to?(:arrive_after_ms) && ticket.arrive_after_ms %>data-arrive-after="<%= ticket.arrive_after_ms %>"<% end %>
+  style="--tilt: <%= tilt_for(ticket.respond_to?(:github_id) && ticket.github_id.presence || ticket.id) %>"
+>
+  <span class="ticket-perforation" aria-hidden="true"></span>
+  <span class="ticket-top">
+    <span class="ticket-title">
+      <span class="ticket-number">#<%= ticket.number %></span>
+      <%= ticket.title %>
+    </span>
+    <span class="ticket-state" data-clock-mark><%= state_mark(row.state) %></span>
+  </span>
+  <span class="ticket-clocks">
+    <span class="clock">
+      <span class="clock-value" data-clock-walk><%= Kitchen::Clock.countdown(row.remaining_ms) %></span>
+      <span class="clock-label">walk</span>
+    </span>
+    <span class="clock">
+      <span class="clock-value" data-clock-open><%= Kitchen::Clock.open_for(row.wait_ms) %></span>
+      <span class="clock-label">open</span>
+    </span>
+  </span>
+  <span class="ticket-chips">
+    <% actor_names(ticket).each do |actor| %>
+      <span class="chip chip-actor" data-actor="<%= actor %>"><%= actor %></span>
+    <% end %>
+    <span class="chip"><%= ticket.kind == "pr" ? "PR" : "issue" %></span>
+    <span class="chip"><%= ticket.size %></span>
+    <% chip = Kitchen::Size.kitchen_chip(ticket.labels) %>
+    <% if chip %>
+      <span class="chip"><%= chip %></span>
+    <% end %>
+  </span>
+</a>

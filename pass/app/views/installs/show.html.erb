@@ -1,0 +1,55 @@
+<% content_for :title, "Install The Pass" %>
+<main class="install">
+  <p class="eyebrow">The Pass</p>
+  <h1>Sign in. Install it on the repos you choose.</h1>
+  <p class="lede">
+    The kiosk at <span class="repo">/owner/repo</span> does not need this session.
+    GitHub keeps the App. This server remembers each installation.
+  </p>
+
+  <% if @message.present? %>
+    <p class="install-error"><%= @message %></p>
+  <% end %>
+
+  <% if @login.present? %>
+    <p class="quiet">Signed in as <%= @login %>.</p>
+  <% end %>
+
+  <% if @repos.present? %>
+    <section class="install-pick">
+      <h2>Pick the repo for this pass.</h2>
+      <ul>
+        <% @repos.each do |repo| %>
+          <li><%= link_to "#{repo.owner}/#{repo.name}", repo_board_path(repo.owner, repo.name), class: "install-choice" %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @app.nil? %>
+    <% manifest = Kitchen::Manifest.build(request.base_url).to_json %>
+    <form class="install-form" action="https://github.com/organizations/Ebbe-Method/settings/apps/new" method="post">
+      <input type="hidden" name="manifest" value="<%= manifest %>">
+      <button type="submit">Create the GitHub App</button>
+    </form>
+    <form class="install-form" action="https://github.com/settings/apps/new" method="post">
+      <input type="hidden" name="manifest" value="<%= manifest %>">
+      <button class="install-quiet" type="submit">Or create under your personal account</button>
+    </form>
+  <% elsif @login.blank? %>
+    <%= link_to "Sign in with GitHub", github_sign_in_path, class: "install-choice" %>
+  <% else %>
+    <%= link_to "Install on repositories", Kitchen::InstallFlow.install_url(@app.html_url), class: "install-choice" %>
+    <% saved = @app.installations.includes(:installation_repos) %>
+    <% if saved.any? %>
+      <ul class="install-saved">
+        <% saved.each do |installation| %>
+          <% installation.installation_repos.each do |repo| %>
+            <li><%= link_to "#{repo.owner}/#{repo.name}", repo_board_path(repo.owner, repo.name) %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= button_to "Sign out", sign_out_path, method: :delete, class: "install-quiet" %>
+  <% end %>
+</main>
