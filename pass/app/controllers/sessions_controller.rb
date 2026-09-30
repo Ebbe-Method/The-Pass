@@ -54,7 +54,4 @@ class SessionsController < ApplicationController
       ActiveSupport::SecurityUtils.secure_compare(expected, given)
     end
 
-    def github_http
-      Rails.application.config.x.github_http || Kitchen::Http.new
-    end
 end

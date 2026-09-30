@@ -17,6 +17,12 @@ module Kitchen
       end
     end
 
+    def self.resolve(configured)
+      return new if configured.nil? || configured.is_a?(ActiveSupport::OrderedOptions)
+
+      configured
+    end
+
     def call(url, method: "GET", headers: {}, body: nil)
       uri = URI(url)
       request = method.to_s.upcase == "POST" ? Net::HTTP::Post.new(uri) : Net::HTTP::Get.new(uri)

@@ -40,7 +40,4 @@ class WallsController < ApplicationController
       render :show
     end
 
-    def github_http
-      Rails.application.config.x.github_http || Kitchen::Http.new
-    end
 end

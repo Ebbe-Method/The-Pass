@@ -112,6 +112,30 @@ class GithubTest < ActiveSupport::TestCase
     assert_equal "none", ticket.ci
   end
 
+  test "convert_manifest raises when the client returns nil" do
+    http = Object.new
+    http.define_singleton_method(:call) { |*| nil }
+
+    error = assert_raises(Kitchen::Github::Error) do
+      Kitchen::Github.convert_manifest("abc", http: http)
+    end
+
+    assert_equal "manifest conversion failed (no response)", error.message
+  end
+
+  test "convert_manifest includes the GitHub status and body" do
+    http = Object.new
+    http.define_singleton_method(:call) do |*|
+      Kitchen::Http::Response.new(422, '{"message":"expired"}')
+    end
+
+    error = assert_raises(Kitchen::Github::Error) do
+      Kitchen::Github.convert_manifest("abc", http: http)
+    end
+
+    assert_equal 'manifest conversion failed (422 {"message":"expired"})', error.message
+  end
+
   private
 
   def issue(number)
