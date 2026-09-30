@@ -42,7 +42,12 @@ module Kitchen
           "User-Agent" => "the-pass-kiosk"
         }
       )
-      raise Error, "manifest conversion failed (#{response.status})" unless response.ok?
+      unless response.respond_to?(:ok?) && response.ok?
+        status = response.respond_to?(:status) ? response.status : nil
+        body = response.respond_to?(:body) ? response.body.to_s[0, 200] : ""
+        detail = status.nil? ? "no response" : "#{status} #{body}".strip
+        raise Error, "manifest conversion failed (#{detail})"
+      end
 
       body = response.json
       raise Error, "manifest conversion missing id or pem" if body["id"].blank? || body["pem"].blank?

@@ -24,8 +24,4 @@ class InstallsController < ApplicationController
     @login = session[:github_login]
   end
 
-  private
-    def github_http
-      Rails.application.config.x.github_http || Kitchen::Http.new
-    end
 end

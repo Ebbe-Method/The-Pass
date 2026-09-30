@@ -237,4 +237,29 @@ class InstallTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 55, Installation.for_repo("acme", "widgets").github_installation_id
   end
+
+  test "a blank config client still posts the manifest code" do
+    Rails.application.config.x.github_http = ActiveSupport::OrderedOptions.new
+    singleton = class << Kitchen::Http; self; end
+    singleton.alias_method :new_before_blank_client_test, :new
+    singleton.define_method(:new) do
+      client = new_before_blank_client_test
+      client.define_singleton_method(:call) do |url, method:, headers:, body: nil|
+        Kitchen::Http::Response.new(422, '{"message":"expired"}')
+      end
+      client
+    end
+
+    get "/install", params: { code: "abc" }
+
+    assert_response :success
+    assert_match "manifest conversion failed (422", response.body
+    assert_match "expired", response.body
+    assert_no_match(/NoMethodError/, response.body)
+  ensure
+    if singleton&.method_defined?(:new_before_blank_client_test)
+      singleton.alias_method :new, :new_before_blank_client_test
+      singleton.remove_method :new_before_blank_client_test
+    end
+  end
 end
